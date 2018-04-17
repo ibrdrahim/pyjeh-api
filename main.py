@@ -124,10 +124,85 @@ def news_sort(sort):
     else:
         abort(401, 'Sorry, access denied.')
 
+@route('/news/delete/:id')
+def news_delete(id):
+    key = dictionary.get('apikey')
+
+    if request.get_header('apikey') in key:
+        row_data, msg = SampleController().get_news_by_id(id)
+
+        try:
+            return Format().build(row_data, msg)
+        except Exception as er:
+            logger(str(er))
+            abort(500, "Internal Server Error.")
+    else:
+        abort(401, 'Sorry, access denied.')
+
+@route('/comment/delete/:id')
+def comment_delete(id):
+    key = dictionary.get('apikey')
+
+    if request.get_header('apikey') in key:
+        row_data, msg = SampleController().get_comment_by_id(id)
+
+        try:
+            return Format().build(row_data, msg)
+        except Exception as er:
+            logger(str(er))
+            abort(500, "Internal Server Error.")
+    else:
+        abort(401, 'Sorry, access denied.')
+
+@route('/news/add')
+def news_add():
+    key = dictionary.get('apikey')
+
+    if request.get_header('apikey') in key:
+        params = {
+            'author': request.query.author,
+            'title': request.query.title,
+            'slug': request.query.slug,
+            'description': request.query.description,
+            'img_news': request.query.image
+        }
+
+        row_data, msg = SampleController().add_news(params)
+
+        try:
+            return Format().build(row_data, msg)
+        except Exception as er:
+            logger(str(er))
+            abort(500, "Internal Server Error.")
+    else:
+        abort(401, 'Sorry, access denied.')
+
+@route('/comment/add/:id')
+def comment_add(id):
+    key = dictionary.get('apikey')
+
+    if request.get_header('apikey') in key:
+        params = {
+            'id_news': id,
+            'guest': request.query.guest,
+            'email': request.query.email,
+            'message': request.query.message
+        }
+
+        row_data, msg = SampleController().add_comment_news(params)
+
+        try:
+            return Format().build(row_data, msg)
+        except Exception as er:
+            logger(str(er))
+            abort(500, "Internal Server Error.")
+    else:
+        abort(401, 'Sorry, access denied.')
+
 if __name__ == "__main__":
     from ConfigParser import ConfigParser
 
     cfg = ConfigParser()
-    cfg.read('config/api.conf') 
+    cfg.read('config/pyjeh.conf') 
 
     run(host=cfg.get('app','host'), port=int(cfg.get('app','port')), reloader=False)

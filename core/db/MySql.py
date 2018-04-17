@@ -201,10 +201,10 @@ class Update():
         try:
             self.cursor.execute(' '.join(build))
             
-            return self.cursor.commit()
+            return self.conn.commit()
         except Exception as er:
             logger(str(er))
-            self.cursor.rollback()
+            self.conn.rollback()
             return None
 
     def table(self, table):
@@ -284,14 +284,16 @@ class Insert():
 
     def get(self):
         build = Insert.insert + Insert.query
+
+        print ' '.join(build)
         
         try:
             self.cursor.execute(' '.join(build))
         
-            return self.cursor.commit()
+            return self.conn.commit()
         except Exception as er:
             logger(str(er))
-            self.cursor.rollback()
+            self.conn.rollback()
             return None
         
     def table(self, table):
@@ -304,7 +306,7 @@ class Insert():
         Insert.query.append("({})".format(','.join(field)))
 
     def values(self, value):
-        Insert.query.append("VALUES({})".format(','.join(value)))
+        Insert.query.append("VALUES('{}')".format("','".join(value)))
 
 class Delete():
     delete = []
@@ -329,18 +331,18 @@ class Delete():
 
     def get(self):
         build = Delete.delete + Delete.query
-        
+
         try:
             self.cursor.execute(' '.join(build))
         
-            return self.cursor.commit()
+            return self.conn.commit()
         except Exception as er:
             logger(str(er))
-            self.cursor.rollback()
+            self.conn.rollback()
             return None
         
     def table(self, table):
-        Delete.delete.append("DELETE FROM {}".format(table))
+        Delete.delete.append("DELETE FROM `{}`".format(table))
     
     def raw(self, value):
         Delete.query.append("{}".format(value))

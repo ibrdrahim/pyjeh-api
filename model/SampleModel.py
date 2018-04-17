@@ -1,4 +1,4 @@
-from core.db.MySql import Select
+from core.db.MySql import Select, Delete, Insert
 from library.logging.Log import logger
 
 class SampleModel():
@@ -79,5 +79,35 @@ class SampleModel():
 		query.order_by(['cnt','desc'])
 		query.limit(limit)
 		query.fetchall()
+
+		return query.get()
+
+	def delete_news_id(self, id):
+		query = Delete('dbsample')
+		query.table('news')
+		query.where('id', id)
+
+		return query.get()
+
+	def delete_comment_id(self, id):
+		query = Delete('dbsample')
+		query.table('comment')
+		query.where('id', id)
+
+		return query.get()
+
+	def add_comment(self, field, value):		
+		query = Insert('dbsample')
+		query.table('comment')
+		query.fields(field)
+		query.values(value)
+
+		return query.get()
+
+	def add_news(self, field, value):		
+		query = Insert('dbsample')
+		query.table('news')
+		query.fields(field)
+		query.values(value)
 
 		return query.get()

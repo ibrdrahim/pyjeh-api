@@ -97,5 +97,55 @@ class SampleController():
 			logger(str(er))
 			return None, str(er)
 
+    def get_news_by_id(self, id):        
+        try:
+            sample_model = SampleModel()
+
+            return sample_model.delete_news_id(id), 'Success'
+        except Exception as er:
+			logger(str(er))
+			return None, str(er)
+
+    def get_comment_by_id(self, id):        
+        try:
+            sample_model = SampleModel()
+
+            return sample_model.delete_comment_id(id), 'Success'
+        except Exception as er:
+			logger(str(er))
+			return None, str(er)
+
+    def add_news(self, params): 
+        field = []
+        value = []
+        try:
+            sample_model = SampleModel()
+
+            for item in params:
+                if params.get(item):
+                    field.append(item)
+                    value.append(params.get(item))
+
+            return sample_model.add_news(field, value), 'Success'
+        except Exception as er:
+			logger(str(er))
+			return None, str(er)
+
+    def add_comment_news(self, params): 
+        field = []
+        value = []
+        try:
+            sample_model = SampleModel()
+
+            for item in params:
+                if params.get(item):
+                    field.append(item)
+                    value.append(params.get(item))
+
+            return sample_model.add_comment(field, value), 'Success'
+        except Exception as er:
+			logger(str(er))
+			return None, str(er)
+
 if __name__ == '__main__':
 	SampleController()
