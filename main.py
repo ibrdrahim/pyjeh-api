@@ -1,7 +1,6 @@
 from bottle import route, request, abort, run
-from ConfigParser import ConfigParser
 from controller.IsmayaController import IsmayaController
-from helper.Helper import Helper
+from core.app.Handler import Format
 from library.logging.Log import logger
 import dictionary
 
@@ -14,10 +13,10 @@ def banner():
     key = dictionary.get('apikey')
 
     if request.get_header('apikey') in key:
-        row_data = IsmayaController().get_banner()
+        row_data, msg = IsmayaController().get_banner()
 
         try:
-            return Helper().raw(row_data)
+            return Format().build(row_data, msg)
         except Exception as er:
             logger(str(er))
             abort(500, "Internal Server Error.")
@@ -29,10 +28,10 @@ def celebrate():
     key = dictionary.get('apikey')
 
     if request.get_header('apikey') in key:
-        row_data = IsmayaController().get_celebrate(request.query.perpage)
+        row_data, msg = IsmayaController().get_celebrate(request.query.perpage)
 
         try:
-            return Helper().raw(row_data)
+            return Format().build(row_data, msg)
         except Exception as er:
             logger(str(er))
             abort(500, "Internal Server Error.")
@@ -44,10 +43,10 @@ def whatson():
     key = dictionary.get('apikey')
 
     if request.get_header('apikey') in key:
-        row_data = IsmayaController().get_whatson()
+        row_data, msg = IsmayaController().get_whatson()
 
         try:
-            return Helper().raw(row_data)
+            return Format().build(row_data, msg)
         except Exception as er:
             logger(str(er))
             abort(500, "Internal Server Error.")
@@ -59,10 +58,10 @@ def brand_promo():
     key = dictionary.get('apikey')
 
     if request.get_header('apikey') in key:
-        row_data = IsmayaController().get_promo_brand()
+        row_data, msg = IsmayaController().get_promo_brand()
 
         try:
-            return Helper().raw(row_data)
+            return Format().build(row_data, msg)
         except Exception as er:
             logger(str(er))
             abort(500, "Internal Server Error.")
@@ -74,10 +73,10 @@ def brand_event():
     key = dictionary.get('apikey')
 
     if request.get_header('apikey') in key:
-        row_data = IsmayaController().get_event_brand()
+        row_data, msg = IsmayaController().get_event_brand()
 
         try:
-            return Helper().raw(row_data)
+            return Format().build(row_data)
         except Exception as er:
             logger(str(er))
             abort(500, "Internal Server Error.")
@@ -97,10 +96,10 @@ def news():
         if request.query.page:
             page = request.query.page
 
-        row_data = IsmayaController().get_news(int(perpage), int(page))
+        row_data, msg = IsmayaController().get_news(int(perpage), int(page))
 
         try:
-            return Helper().raw(row_data)
+            return Format().build(row_data, msg)
         except Exception as er:
             logger(str(er))
             abort(500, "Internal Server Error.")
@@ -120,10 +119,10 @@ def tv():
         if request.query.page:
             page = request.query.page
 
-        row_data = IsmayaController().get_tv(int(perpage), int(page))
+        row_data, msg = IsmayaController().get_tv(int(perpage), int(page))
 
         try:
-            return Helper().raw(row_data)
+            return Format().build(row_data, msg)
         except Exception as er:
             logger(str(er))
             abort(500, "Internal Server Error.")
@@ -131,6 +130,8 @@ def tv():
         abort(401, 'Sorry, access denied.')
 
 if __name__ == "__main__":
+    from ConfigParser import ConfigParser
+
     cfg = ConfigParser()
     cfg.read('config/api.conf') 
 
