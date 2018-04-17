@@ -1,0 +1,25 @@
+2018-04-17 13:08:30,668 [ERROR] No section: 'dbismaya'
+2018-04-17 13:08:30,668 [ERROR] Select instance has no attribute 'cursor'
+2018-04-17 13:08:30,668 [ERROR] Select instance has no attribute 'cursor'
+2018-04-17 13:08:30,669 [ERROR] Select instance has no attribute 'cursor'
+2018-04-17 13:08:30,669 [ERROR] Select instance has no attribute 'cursor'
+2018-04-17 13:08:30,669 [ERROR] Select instance has no attribute 'cursor'
+2018-04-17 13:08:30,669 [ERROR] 'NoneType' object does not support item assignment
+2018-04-17 13:08:30,669 [ERROR] 'NoneType' object does not support item assignment
+2018-04-17 13:08:30,669 [ERROR] 'NoneType' object does not support item assignment
+2018-04-17 13:08:30,669 [ERROR] 'NoneType' object does not support item assignment
+2018-04-17 13:32:40,107 [ERROR] (1054, "Unknown column 'anak' in 'where clause'")
+2018-04-17 13:38:29,826 [ERROR] string indices must be integers, not str
+2018-04-17 13:39:19,328 [ERROR] string indices must be integers, not str
+2018-04-17 13:39:41,364 [ERROR] string indices must be integers, not str
+2018-04-17 13:40:39,841 [ERROR] string indices must be integers, not str
+2018-04-17 13:41:39,277 [ERROR] string indices must be integers, not str
+2018-04-17 13:43:44,408 [ERROR] string indices must be integers, not str
+2018-04-17 13:44:22,441 [ERROR] string indices must be integers, not str
+2018-04-17 13:44:49,000 [ERROR] string indices must be integers, not str
+2018-04-17 13:54:50,457 [ERROR] (1146, "Table 'news.id' doesn't exist")
+2018-04-17 13:56:02,160 [ERROR] (1146, "Table 'news.id' doesn't exist")
+2018-04-17 13:56:02,160 [ERROR] (1146, "Table 'news.id' doesn't exist")
+2018-04-17 13:58:16,980 [ERROR] (1066, "Not unique table/alias: 'news'")
+2018-04-17 13:58:30,291 [ERROR] (1140, "In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'db_sample.news.id'; this is incompatible with sql_mode=only_full_group_by")
+2018-04-17 14:04:02,317 [ERROR] (1055, "Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'db_sample.news.id' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by")

@@ -14,7 +14,7 @@ class Select():
             config = ConfigParser()
             config.read('config/api.conf')
                 
-            pool = MySql(MySQLdb, host=config.get('dbismaya','host'), user=config.get('dbismaya','username'), passwd=config.get('dbismaya','password'), db=config.get('dbismaya','database'), port=int(config.get('dbismaya','port')), charset='utf8')
+            pool = MySql(MySQLdb, host=config.get('dbsample','host'), user=config.get('dbsample','username'), passwd=config.get('dbsample','password'), db=config.get('dbsample','database'), port=int(config.get('dbsample','port')), charset='utf8')
             self.conn = pool.connection()
             self.cursor = self.conn.cursor(MySQLdb.cursors.DictCursor)
             
@@ -136,11 +136,11 @@ class Select():
         else:
             Select.query.append("ORDER BY {} {}".format(field_a[0], field_a[1]))
 
-    def join(self, join, field, value):
-        Select.query.append("{} JOIN {} ON {}".format(join, field, value))
+    def join(self, join, field, condition):
+        Select.query.append("{} JOIN {} ON {}".format(join, field, condition))
 
     def group_by(self, field, short = 'ASC'):
-        Select.query.append("GROUP BY '{}' {}".format(field, short))
+        Select.query.append("GROUP BY {} {}".format(field, short))
     
     def limit(self, limit, start = 0):
         Select.query.append("LIMIT {},{}".format(start, limit))
