@@ -1,2 +1,4 @@
 *.pyc
 bottle.py
+config/*.conf
+log/*

@@ -9,16 +9,14 @@ class Select():
     query = []
     fetch = ''
 
-    def __init__(self, table, field = '*'):
+    def __init__(self, database = 'mysql'):
         try:
             config = ConfigParser()
-            config.read('config/api.conf')
+            config.read('config/pyjeh.conf')
                 
-            pool = MySql(MySQLdb, host=config.get('dbsample','host'), user=config.get('dbsample','username'), passwd=config.get('dbsample','password'), db=config.get('dbsample','database'), port=int(config.get('dbsample','port')), charset='utf8')
+            pool = MySql(MySQLdb, host=config.get(database,'host'), user=config.get(database,'username'), passwd=config.get(database,'password'), db=config.get(database,'database'), port=int(config.get(database,'port')), charset='utf8')
             self.conn = pool.connection()
             self.cursor = self.conn.cursor(MySQLdb.cursors.DictCursor)
-            
-            Select.select.append("SELECT {} FROM `{}`".format(field, table))
         except Exception as er:
 			logger(str(er))
 
@@ -48,6 +46,9 @@ class Select():
         except Exception as er:
             logger(str(er))
             return None
+
+    def table(self, table, field = '*'):
+        Select.select.append("SELECT {} FROM `{}`".format(field, table))
     
     def getpaginate(self, sql, perpage, page):
         data = {}
@@ -176,16 +177,14 @@ class Update():
     change = []
     query = []
 
-    def __init__(self, table):
+    def __init__(self, database = 'mysql'):
         try:
             config = ConfigParser()
-            config.read('config/api.conf')
+            config.read('config/pyjeh.conf')
                 
-            pool = MySql(MySQLdb, host=config.get('dbismaya','host'), user=config.get('dbismaya','username'), passwd=config.get('dbismaya','password'), db=config.get('dbismaya','database'), port=int(config.get('dbismaya','port')), charset='utf8')
+            pool = MySql(MySQLdb, host=config.get(database,'host'), user=config.get(database,'username'), passwd=config.get(database,'password'), db=config.get(database,'database'), port=int(config.get(database,'port')), charset='utf8')
             self.conn = pool.connection()
             self.cursor = self.conn.cursor(MySQLdb.cursors.DictCursor)
-            
-            Update.update.append("UPDATE {}".format(table))
         except Exception as er:
 			logger(str(er))
 
@@ -208,6 +207,9 @@ class Update():
             self.cursor.rollback()
             return None
 
+    def table(self, table):
+        Update.update.append("UPDATE {}".format(table))
+    
     def raw(self, value):
         Update.query.append("{}".format(value))
 
@@ -263,16 +265,14 @@ class Insert():
     insert = []
     query = []
 
-    def __init__(self, table):
+    def __init__(self, database = 'mysql'):
         try:
             config = ConfigParser()
-            config.read('config/api.conf')
+            config.read('config/pyjeh.conf')
                 
-            pool = MySql(MySQLdb, host=config.get('dbismaya','host'), user=config.get('dbismaya','username'), passwd=config.get('dbismaya','password'), db=config.get('dbismaya','database'), port=int(config.get('dbismaya','port')), charset='utf8')
+            pool = MySql(MySQLdb, host=config.get(database,'host'), user=config.get(database,'username'), passwd=config.get(database,'password'), db=config.get(database,'database'), port=int(config.get(database,'port')), charset='utf8')
             self.conn = pool.connection()
             self.cursor = self.conn.cursor(MySQLdb.cursors.DictCursor)
-            
-            Insert.insert.append("INSERT INTO {}".format(table))
         except Exception as er:
 			logger(str(er))
 
@@ -294,6 +294,9 @@ class Insert():
             self.cursor.rollback()
             return None
         
+    def table(self, table):
+        Insert.insert.append("INSERT INTO {}".format(table))
+    
     def raw(self, value):
         Insert.query.append("{}".format(value))
 
@@ -307,16 +310,14 @@ class Delete():
     delete = []
     query = []
 
-    def __init__(self, table):
+    def __init__(self, database = 'mysql'):
         try:
             config = ConfigParser()
-            config.read('config/api.conf')
+            config.read('config/pyjeh.conf')
                 
-            pool = MySql(MySQLdb, host=config.get('dbismaya','host'), user=config.get('dbismaya','username'), passwd=config.get('dbismaya','password'), db=config.get('dbismaya','database'), port=int(config.get('dbismaya','port')), charset='utf8')
+            pool = MySql(MySQLdb, host=config.get(database,'host'), user=config.get(database,'username'), passwd=config.get(database,'password'), db=config.get(database,'database'), port=int(config.get(database,'port')), charset='utf8')
             self.conn = pool.connection()
             self.cursor = self.conn.cursor(MySQLdb.cursors.DictCursor)
-            
-            Delete.delete.append("DELETE FROM {}".format(table))
         except Exception as er:
 			logger(str(er))
 
@@ -338,6 +339,9 @@ class Delete():
             self.cursor.rollback()
             return None
         
+    def table(self, table):
+        Delete.delete.append("DELETE FROM {}".format(table))
+    
     def raw(self, value):
         Delete.query.append("{}".format(value))
     
