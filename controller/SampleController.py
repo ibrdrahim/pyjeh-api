@@ -147,5 +147,14 @@ class SampleController():
 			logger(str(er))
 			return None, str(er)
 
+    def update_comment_news(self, id, params): 
+        try:
+            sample_model = SampleModel()
+
+            return sample_model.update_comment(id, params), 'Success'
+        except Exception as er:
+			logger(str(er))
+			return None, str(er)
+
 if __name__ == '__main__':
 	SampleController()

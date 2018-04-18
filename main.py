@@ -199,6 +199,27 @@ def comment_add(id):
     else:
         abort(401, 'Sorry, access denied.')
 
+@route('/comment/update/:id')
+def comment_update(id):
+    key = dictionary.get('apikey')
+
+    if request.get_header('apikey') in key:
+        params = {
+            'guest': request.query.guest,
+            'email': request.query.email,
+            'message': request.query.message
+        }
+
+        row_data, msg = SampleController().update_comment_news(id, params)
+
+        try:
+            return Format().build(row_data, msg)
+        except Exception as er:
+            logger(str(er))
+            abort(500, "Internal Server Error.")
+    else:
+        abort(401, 'Sorry, access denied.')
+
 if __name__ == "__main__":
     from ConfigParser import ConfigParser
 

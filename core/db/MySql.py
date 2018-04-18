@@ -1,5 +1,6 @@
 import MySQLdb
 import math
+import re
 from core.db.Conn import MySql
 from ConfigParser import ConfigParser
 from library.logging.Log import logger
@@ -78,40 +79,43 @@ class Select():
         Select.query.append("{}".format(value))
     
     def where(self, field, value, operator = '='):
+        number = re.search('^(0|[1-9][0-9]*)$', value)
         if len(Select.query) == 0:
-            if type(value) is str:
-                Select.query.append("WHERE {} {} '{}'".format(field, operator, value))
-            else:
+            if number:
                 Select.query.append("WHERE {} {} {}".format(field, operator, value))
-        else:
-            if type(value) is str:
-                Select.query.append("AND {} {} '{}'".format(field, operator, value))
             else:
+                Select.query.append("WHERE {} {} '{}'".format(field, operator, value))
+        else:
+            if number:
                 Select.query.append("AND {} {} {}".format(field, operator, value))
+            else:
+                Select.query.append("AND {} {} '{}'".format(field, operator, value))
 
     def orWhere(self, field, value, operator = '='):
+        number = re.search('^(0|[1-9][0-9]*)$', value)
         if len(Select.query) == 0:
-            if type(value) is str:
-                Select.query.append("WHERE {} {} '{}'".format(field, operator, value))
-            else:
+            if number:
                 Select.query.append("WHERE {} {} {}".format(field, operator, value))
-        else:
-            if type(value) is str:
-                Select.query.append("OR {} {} '{}'".format(field, operator, value))
             else:
+                Select.query.append("WHERE {} {} '{}'".format(field, operator, value))
+        else:
+            if number:
                 Select.query.append("OR {} {} {}".format(field, operator, value))
+            else:
+                Select.query.append("OR {} {} '{}'".format(field, operator, value))
 
     def notWhere(self, field, value):
+        number = re.search('^(0|[1-9][0-9]*)$', value)
         if len(Select.query) == 0:
-            if type(value) is str:
-                Select.query.append("WHERE NOT {} = '{}'".format(field, value))
-            else:
+            if number:
                 Select.query.append("WHERE NOT {} = {}".format(field, value))
-        else:
-            if type(value) is str:
-                Select.query.append("AND NOT {} = '{}'".format(field, value))
             else:
+                Select.query.append("WHERE NOT {} = '{}'".format(field, value))
+        else:
+            if number:
                 Select.query.append("AND NOT {} = {}".format(field, value))
+            else:
+                Select.query.append("AND NOT {} = '{}'".format(field, value))
 
     def Like(self, field, value):
         if len(Select.query) == 0:
@@ -147,15 +151,17 @@ class Select():
         Select.query.append("LIMIT {},{}".format(start, limit))
 
     def having(self, field, value, operator = '='):
-        if (type(field) is str and type(value) is str):
-            Select.query.append("HAVING '{}' {} '{}'".format(field, operator, value))
-        else:
-            if type(field) is str:
-                Select.query.append("HAVING '{}' {} {}".format(field, operator, value))
-            elif type(value) is str:
+        num_field = re.search('^(0|[1-9][0-9]*)$', field)
+        num_value = re.search('^(0|[1-9][0-9]*)$', value)
+        if (num_field and num_value):
+            if num_field:
                 Select.query.append("HAVING {} {} '{}'".format(field, operator, value))
+            elif num_value:
+                Select.query.append("HAVING '{}' {} {}".format(field, operator, value))
             else:
                 Select.query.append("HAVING {} {} {}".format(field, operator, value))
+        else:
+            Select.query.append("HAVING '{}' {} '{}'".format(field, operator, value))
 
     def paginate(self, perpage = 10, page = 1):
         start = (page - 1) * perpage
@@ -198,6 +204,8 @@ class Update():
     def get(self):
         build = Update.update + [','.join(Update.change)] + Update.query
         
+        print ' '.join(build)
+
         try:
             self.cursor.execute(' '.join(build))
             
@@ -213,53 +221,59 @@ class Update():
     def raw(self, value):
         Update.query.append("{}".format(value))
 
-    def set(self, field, value):
-        if len(Update.query) == 0:
-            if type(value) is str:
-                Update.change.append("SET {} = '{}'".format(field, value))
-            else:
-                Update.change.append("SET {} = {}".format(field, value))
-        else:
-            if type(value) is str:
-                Update.change.append("{} = '{}'".format(field, value))
-            else:
-                Update.change.append("{} = {}".format(field, value))
-
+    def set(self, value):
+        for item in value:
+            if value.get(item):
+                number = re.search('^(0|[1-9][0-9]*)$', value.get(item))
+                if len(Update.change) == 0:
+                    if number:
+                        Update.change.append("SET {} = {}".format(item, value.get(item)))
+                    else:
+                        Update.change.append("SET {} = '{}'".format(item, value.get(item)))
+                else:
+                    if number:
+                        Update.change.append("{} = {}".format(item, value.get(item)))
+                    else:
+                        Update.change.append("{} = '{}'".format(item, value.get(item)))
+    
     def where(self, field, value, operator = '='):
+        number = re.search('^(0|[1-9][0-9]*)$', value)
         if len(Update.query) == 0:
-            if type(value) is str:
-                Update.query.append("WHERE {} {} '{}'".format(field, operator, value))
-            else:
+            if number:
                 Update.query.append("WHERE {} {} {}".format(field, operator, value))
-        else:
-            if type(value) is str:
-                Update.query.append("AND {} {} '{}'".format(field, operator, value))
             else:
+                Update.query.append("WHERE {} {} '{}'".format(field, operator, value))
+        else:
+            if number:
                 Update.query.append("AND {} {} {}".format(field, operator, value))
+            else:
+                Update.query.append("AND {} {} '{}'".format(field, operator, value))
 
     def orWhere(self, field, value, operator = '='):
+        number = re.search('^(0|[1-9][0-9]*)$', value)
         if len(Update.query) == 0:
-            if type(value) is str:
-                Update.query.append("WHERE {} {} '{}'".format(field, operator, value))
-            else:
+            if number:
                 Update.query.append("WHERE {} {} {}".format(field, operator, value))
-        else:
-            if type(value) is str:
-                Update.query.append("OR {} {} '{}'".format(field, operator, value))
             else:
+                Update.query.append("WHERE {} {} '{}'".format(field, operator, value))
+        else:
+            if number:
                 Update.query.append("OR {} {} {}".format(field, operator, value))
+            else:
+                Update.query.append("OR {} {} '{}'".format(field, operator, value))
 
     def notWhere(self, field, value):
+        number = re.search('^(0|[1-9][0-9]*)$', value)
         if len(Update.query) == 0:
-            if type(value) is str:
-                Update.query.append("WHERE NOT {} = '{}'".format(field, value))
-            else:
+            if number:
                 Update.query.append("WHERE NOT {} = {}".format(field, value))
-        else:
-            if type(value) is str:
-                Update.query.append("AND NOT {} = '{}'".format(field, value))
             else:
+                Update.query.append("WHERE NOT {} = '{}'".format(field, value))
+        else:
+            if number:
                 Update.query.append("AND NOT {} = {}".format(field, value))
+            else:
+                Update.query.append("AND NOT {} = '{}'".format(field, value))
 
 class Insert():
     insert = []
@@ -348,37 +362,40 @@ class Delete():
         Delete.query.append("{}".format(value))
     
     def where(self, field, value, operator = '='):
+        number = re.search('^(0|[1-9][0-9]*)$', value)
         if len(Delete.query) == 0:
-            if type(value) is str:
-                Delete.query.append("WHERE {} {} '{}'".format(field, operator, value))
-            else:
+            if number:
                 Delete.query.append("WHERE {} {} {}".format(field, operator, value))
-        else:
-            if type(value) is str:
-                Delete.query.append("AND {} {} '{}'".format(field, operator, value))
             else:
+                Delete.query.append("WHERE {} {} '{}'".format(field, operator, value))
+        else:
+            if number:
                 Delete.query.append("AND {} {} {}".format(field, operator, value))
+            else:
+                Delete.query.append("AND {} {} '{}'".format(field, operator, value))
 
     def orWhere(self, field, value, operator = '='):
+        number = re.search('^(0|[1-9][0-9]*)$', value)
         if len(Delete.query) == 0:
-            if type(value) is str:
-                Delete.query.append("WHERE {} {} '{}'".format(field, operator, value))
-            else:
+            if number:
                 Delete.query.append("WHERE {} {} {}".format(field, operator, value))
-        else:
-            if type(value) is str:
-                Delete.query.append("OR {} {} '{}'".format(field, operator, value))
             else:
+                Delete.query.append("WHERE {} {} '{}'".format(field, operator, value))
+        else:
+            if number:
                 Delete.query.append("OR {} {} {}".format(field, operator, value))
+            else:
+                Delete.query.append("OR {} {} '{}'".format(field, operator, value))
 
     def notWhere(self, field, value):
+        number = re.search('^(0|[1-9][0-9]*)$', value)
         if len(Delete.query) == 0:
-            if type(value) is str:
-                Delete.query.append("WHERE NOT {} = '{}'".format(field, value))
-            else:
+            if number:
                 Delete.query.append("WHERE NOT {} = {}".format(field, value))
-        else:
-            if type(value) is str:
-                Delete.query.append("AND NOT {} = '{}'".format(field, value))
             else:
+                Delete.query.append("WHERE NOT {} = '{}'".format(field, value))
+        else:
+            if number:
                 Delete.query.append("AND NOT {} = {}".format(field, value))
+            else:
+                Delete.query.append("AND NOT {} = '{}'".format(field, value))

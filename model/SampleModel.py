@@ -1,4 +1,4 @@
-from core.db.MySql import Select, Delete, Insert
+from core.db.MySql import Select, Delete, Insert, Update
 from library.logging.Log import logger
 
 class SampleModel():
@@ -109,5 +109,13 @@ class SampleModel():
 		query.table('news')
 		query.fields(field)
 		query.values(value)
+
+		return query.get()
+
+	def update_comment(self, id, value):		
+		query = Update('dbsample')
+		query.table('comment')
+		query.set(value)
+		query.where('id', id)
 
 		return query.get()
