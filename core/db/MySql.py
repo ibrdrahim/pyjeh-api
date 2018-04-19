@@ -48,6 +48,10 @@ class Select():
             logger(str(er))
             return None
 
+    def dump(self):
+        build = Select.select + Select.query
+        return ' '.join(build)
+
     def table(self, table, field = '*'):
         Select.select.append("SELECT {} FROM `{}`".format(field, table))
     
@@ -213,6 +217,10 @@ class Update():
             self.conn.rollback()
             return None
 
+    def dump(self):
+        build = Update.update + [','.join(Update.change)] + Update.query
+        return ' '.join(build)
+
     def table(self, table):
         Update.update.append("UPDATE {}".format(table))
     
@@ -304,7 +312,11 @@ class Insert():
             logger(str(er))
             self.conn.rollback()
             return None
-        
+    
+    def dump(self):
+        build = Insert.insert + Insert.query
+        return ' '.join(build)
+
     def table(self, table):
         Insert.insert.append("INSERT INTO {}".format(table))
     
@@ -361,7 +373,11 @@ class Delete():
             logger(str(er))
             self.conn.rollback()
             return None
-        
+    
+    def dump(self):
+        build = Delete.delete + Delete.query
+        return ' '.join(build)
+
     def table(self, table):
         Delete.delete.append("DELETE FROM `{}`".format(table))
     
