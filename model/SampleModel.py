@@ -73,10 +73,10 @@ class SampleModel():
 
 	def get_news_mostcomment(self, limit):
 		query = Select('dbsample')
-		query.table('news', 'news.*, COUNT(comment.id) AS cnt')
+		query.table('news', 'news.*, COUNT(comment.id) AS comment')
 		query.join('INNER', 'comment', 'news.id = comment.id_news')
 		query.group_by('news.id', 'asc')
-		query.order_by(['cnt','desc'])
+		query.order_by(['comment','desc'])
 		query.limit(limit)
 		query.fetchall()
 

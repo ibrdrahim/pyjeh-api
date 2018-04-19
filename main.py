@@ -1,4 +1,4 @@
-from bottle import route, request, abort, run
+from bottle import route, request, abort, run, post
 from core.app.Handler import Format
 from library.logging.Log import logger
 import dictionary
@@ -154,12 +154,12 @@ def comment_delete(id):
     else:
         abort(401, 'Sorry, access denied.')
 
-@route('/news/add')
+@post('/news/add')
 def news_add():
     key = dictionary.get('apikey')
 
     if request.get_header('apikey') in key:
-        row_data, msg = SampleController().add_news(request.query)
+        row_data, msg = SampleController().add_news(request.forms)
 
         try:
             return Format().build(row_data, msg)
@@ -169,12 +169,12 @@ def news_add():
     else:
         abort(401, 'Sorry, access denied.')
 
-@route('/comment/add')
+@post('/comment/add')
 def comment_add():
     key = dictionary.get('apikey')
 
     if request.get_header('apikey') in key:
-        row_data, msg = SampleController().add_comment_news(request.query)
+        row_data, msg = SampleController().add_comment_news(request.forms)
 
         try:
             return Format().build(row_data, msg)
@@ -184,12 +184,12 @@ def comment_add():
     else:
         abort(401, 'Sorry, access denied.')
 
-@route('/comment/update/:id')
+@post('/comment/update/:id')
 def comment_update(id):
     key = dictionary.get('apikey')
 
     if request.get_header('apikey') in key:
-        row_data, msg = SampleController().update_comment_news(id, request.query)
+        row_data, msg = SampleController().update_comment_news(id, request.forms)
 
         try:
             return Format().build(row_data, msg)
