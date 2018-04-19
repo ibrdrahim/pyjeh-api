@@ -79,7 +79,7 @@ class Select():
         Select.query.append("{}".format(value))
     
     def where(self, field, value, operator = '='):
-        number = re.search('^(0|[1-9][0-9]*)$', value)
+        number = re.search('^(0|[1-9][0-9]*)$', str(value))
         if len(Select.query) == 0:
             if number:
                 Select.query.append("WHERE {} {} {}".format(field, operator, value))
@@ -92,7 +92,7 @@ class Select():
                 Select.query.append("AND {} {} '{}'".format(field, operator, value))
 
     def orWhere(self, field, value, operator = '='):
-        number = re.search('^(0|[1-9][0-9]*)$', value)
+        number = re.search('^(0|[1-9][0-9]*)$', str(value))
         if len(Select.query) == 0:
             if number:
                 Select.query.append("WHERE {} {} {}".format(field, operator, value))
@@ -105,7 +105,7 @@ class Select():
                 Select.query.append("OR {} {} '{}'".format(field, operator, value))
 
     def notWhere(self, field, value):
-        number = re.search('^(0|[1-9][0-9]*)$', value)
+        number = re.search('^(0|[1-9][0-9]*)$', str(value))
         if len(Select.query) == 0:
             if number:
                 Select.query.append("WHERE NOT {} = {}".format(field, value))
@@ -151,8 +151,8 @@ class Select():
         Select.query.append("LIMIT {},{}".format(start, limit))
 
     def having(self, field, value, operator = '='):
-        num_field = re.search('^(0|[1-9][0-9]*)$', field)
-        num_value = re.search('^(0|[1-9][0-9]*)$', value)
+        num_field = re.search('^(0|[1-9][0-9]*)$', str(field))
+        num_value = re.search('^(0|[1-9][0-9]*)$', str(value))
         if (num_field and num_value):
             if num_field:
                 Select.query.append("HAVING {} {} '{}'".format(field, operator, value))
@@ -203,8 +203,6 @@ class Update():
 
     def get(self):
         build = Update.update + [','.join(Update.change)] + Update.query
-        
-        print ' '.join(build)
 
         try:
             self.cursor.execute(' '.join(build))
@@ -223,21 +221,20 @@ class Update():
 
     def set(self, value):
         for item in value:
-            if value.get(item):
-                number = re.search('^(0|[1-9][0-9]*)$', value.get(item))
-                if len(Update.change) == 0:
-                    if number:
-                        Update.change.append("SET {} = {}".format(item, value.get(item)))
-                    else:
-                        Update.change.append("SET {} = '{}'".format(item, value.get(item)))
+            number = re.search('^(0|[1-9][0-9]*)$', str(value.get(item)))
+            if len(Update.change) == 0:
+                if number:
+                    Update.change.append("SET {} = {}".format(item, value.get(item)))
                 else:
-                    if number:
-                        Update.change.append("{} = {}".format(item, value.get(item)))
-                    else:
-                        Update.change.append("{} = '{}'".format(item, value.get(item)))
+                    Update.change.append("SET {} = '{}'".format(item, value.get(item)))
+            else:
+                if number:
+                    Update.change.append("{} = {}".format(item, value.get(item)))
+                else:
+                    Update.change.append("{} = '{}'".format(item, value.get(item)))
     
     def where(self, field, value, operator = '='):
-        number = re.search('^(0|[1-9][0-9]*)$', value)
+        number = re.search('^(0|[1-9][0-9]*)$', str(value))
         if len(Update.query) == 0:
             if number:
                 Update.query.append("WHERE {} {} {}".format(field, operator, value))
@@ -263,7 +260,7 @@ class Update():
                 Update.query.append("OR {} {} '{}'".format(field, operator, value))
 
     def notWhere(self, field, value):
-        number = re.search('^(0|[1-9][0-9]*)$', value)
+        number = re.search('^(0|[1-9][0-9]*)$', str(value))
         if len(Update.query) == 0:
             if number:
                 Update.query.append("WHERE NOT {} = {}".format(field, value))
@@ -298,8 +295,6 @@ class Insert():
 
     def get(self):
         build = Insert.insert + Insert.query
-
-        print ' '.join(build)
         
         try:
             self.cursor.execute(' '.join(build))
@@ -315,6 +310,18 @@ class Insert():
     
     def raw(self, value):
         Insert.query.append("{}".format(value))
+
+    def create(self, params):
+        field = []
+        value = []
+
+        for item in params:
+            if params.get(item):
+                field.append(item)
+                value.append(params.get(item))
+
+        self.fields(field)
+        self.values(value)
 
     def fields(self, field):
         Insert.query.append("({})".format(','.join(field)))
@@ -362,7 +369,7 @@ class Delete():
         Delete.query.append("{}".format(value))
     
     def where(self, field, value, operator = '='):
-        number = re.search('^(0|[1-9][0-9]*)$', value)
+        number = re.search('^(0|[1-9][0-9]*)$', str(value))
         if len(Delete.query) == 0:
             if number:
                 Delete.query.append("WHERE {} {} {}".format(field, operator, value))
@@ -375,7 +382,7 @@ class Delete():
                 Delete.query.append("AND {} {} '{}'".format(field, operator, value))
 
     def orWhere(self, field, value, operator = '='):
-        number = re.search('^(0|[1-9][0-9]*)$', value)
+        number = re.search('^(0|[1-9][0-9]*)$', str(value))
         if len(Delete.query) == 0:
             if number:
                 Delete.query.append("WHERE {} {} {}".format(field, operator, value))
@@ -388,7 +395,7 @@ class Delete():
                 Delete.query.append("OR {} {} '{}'".format(field, operator, value))
 
     def notWhere(self, field, value):
-        number = re.search('^(0|[1-9][0-9]*)$', value)
+        number = re.search('^(0|[1-9][0-9]*)$', str(value))
         if len(Delete.query) == 0:
             if number:
                 Delete.query.append("WHERE NOT {} = {}".format(field, value))

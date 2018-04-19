@@ -116,33 +116,19 @@ class SampleController():
 			return None, str(er)
 
     def add_news(self, params): 
-        field = []
-        value = []
         try:
             sample_model = SampleModel()
 
-            for item in params:
-                if params.get(item):
-                    field.append(item)
-                    value.append(params.get(item))
-
-            return sample_model.add_news(field, value), 'Success'
+            return sample_model.add_news(params), 'Success'
         except Exception as er:
 			logger(str(er))
 			return None, str(er)
 
-    def add_comment_news(self, params): 
-        field = []
-        value = []
+    def add_comment_news(self, params):
         try:
             sample_model = SampleModel()
 
-            for item in params:
-                if params.get(item):
-                    field.append(item)
-                    value.append(params.get(item))
-
-            return sample_model.add_comment(field, value), 'Success'
+            return sample_model.add_comment(params), 'Success'
         except Exception as er:
 			logger(str(er))
 			return None, str(er)

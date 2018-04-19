@@ -159,15 +159,7 @@ def news_add():
     key = dictionary.get('apikey')
 
     if request.get_header('apikey') in key:
-        params = {
-            'author': request.query.author,
-            'title': request.query.title,
-            'slug': request.query.slug,
-            'description': request.query.description,
-            'img_news': request.query.image
-        }
-
-        row_data, msg = SampleController().add_news(params)
+        row_data, msg = SampleController().add_news(request.query)
 
         try:
             return Format().build(row_data, msg)
@@ -177,19 +169,12 @@ def news_add():
     else:
         abort(401, 'Sorry, access denied.')
 
-@route('/comment/add/:id')
-def comment_add(id):
+@route('/comment/add')
+def comment_add():
     key = dictionary.get('apikey')
 
     if request.get_header('apikey') in key:
-        params = {
-            'id_news': id,
-            'guest': request.query.guest,
-            'email': request.query.email,
-            'message': request.query.message
-        }
-
-        row_data, msg = SampleController().add_comment_news(params)
+        row_data, msg = SampleController().add_comment_news(request.query)
 
         try:
             return Format().build(row_data, msg)
@@ -204,13 +189,7 @@ def comment_update(id):
     key = dictionary.get('apikey')
 
     if request.get_header('apikey') in key:
-        params = {
-            'guest': request.query.guest,
-            'email': request.query.email,
-            'message': request.query.message
-        }
-
-        row_data, msg = SampleController().update_comment_news(id, params)
+        row_data, msg = SampleController().update_comment_news(id, request.query)
 
         try:
             return Format().build(row_data, msg)

@@ -96,19 +96,17 @@ class SampleModel():
 
 		return query.get()
 
-	def add_comment(self, field, value):		
+	def add_comment(self, params):		
 		query = Insert('dbsample')
 		query.table('comment')
-		query.fields(field)
-		query.values(value)
+		query.create(params)
 
 		return query.get()
 
-	def add_news(self, field, value):		
+	def add_news(self, params):		
 		query = Insert('dbsample')
 		query.table('news')
-		query.fields(field)
-		query.values(value)
+		query.create(params)
 
 		return query.get()
 
