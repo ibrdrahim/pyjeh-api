@@ -167,7 +167,7 @@ class Select():
         else:
             Select.query.append("HAVING '{}' {} '{}'".format(field, operator, value))
 
-    def paginate(self, perpage = 10, page = 1):
+    def paginate(self, perpage = 0, page = 0):
         start = (page - 1) * perpage
         limit = perpage
 

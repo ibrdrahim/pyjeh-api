@@ -29,15 +29,7 @@ def news_pagging():
     key = dictionary.get('apikey')
 
     if request.get_header('apikey') in key:
-        perpage = 6
-        if request.query.perpage:
-            perpage = request.query.perpage
-
-        page = 1
-        if request.query.page:
-            page = request.query.page
-
-        row_data, msg = SampleController().get_news(int(perpage), int(page))
+        row_data, msg = SampleController().get_news(request.query)
 
         try:
             return Format().build(row_data, msg)
@@ -82,15 +74,7 @@ def news_comment():
     key = dictionary.get('apikey')
 
     if request.get_header('apikey') in key:
-        perpage = 6
-        if request.query.perpage:
-            perpage = request.query.perpage
-
-        page = 1
-        if request.query.page:
-            page = request.query.page
-
-        row_data, msg = SampleController().get_news_comment(int(perpage), int(page))
+        row_data, msg = SampleController().get_news_comment(request.query)
 
         try:
             return Format().build(row_data, msg)
@@ -105,16 +89,12 @@ def news_sort(sort):
     key = dictionary.get('apikey')
 
     if request.get_header('apikey') in key:
-        limit = 6
-        if request.query.limit:
-            limit = request.query.limit
-
         if sort == 'likes':
-            row_data, msg = SampleController().get_news_likes(int(limit))
+            row_data, msg = SampleController().get_news_likes(request.query)
         elif sort == 'viwes':
-            row_data, msg = SampleController().get_news_viwes(int(limit))
+            row_data, msg = SampleController().get_news_viwes(request.query)
         else:
-            row_data, msg = SampleController().get_news_most_comment(int(limit))
+            row_data, msg = SampleController().get_news_most_comment(request.query)
 
         try:
             return Format().build(row_data, msg)

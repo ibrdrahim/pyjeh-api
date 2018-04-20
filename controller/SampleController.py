@@ -15,11 +15,11 @@ class SampleController():
 			logger(str(er))
 			return None, str(er)
 
-    def get_news(self, perpage, page):        
+    def get_news(self, params):        
         try:
             sample_model = SampleModel()
 
-            return sample_model.get_news_paginate(perpage, page), None
+            return sample_model.get_news_paginate(int(params.perpage), int(params.page)), None
         except Exception as er:
 			logger(str(er))
 			return None, str(er)
@@ -45,13 +45,13 @@ class SampleController():
 			logger(str(er))
 			return None, str(er)
 
-    def get_news_comment(self, perpage, page):  
+    def get_news_comment(self, params):  
         data = []
 
         try:
             sample_model = SampleModel()
 
-            row_data = sample_model.get_news_paginate(perpage, page)
+            row_data = sample_model.get_news_paginate(int(params.perpage), int(params.page))
 
             items = []
             try:
@@ -70,29 +70,29 @@ class SampleController():
 			logger(str(er))
 			return None, str(er)
 
-    def get_news_likes(self, limit):        
+    def get_news_likes(self, params):        
         try:
             sample_model = SampleModel()
 
-            return sample_model.get_news_mostlike(limit), None
+            return sample_model.get_news_mostlike(int(params.limit)), None
         except Exception as er:
 			logger(str(er))
 			return None, str(er)
 
-    def get_news_viwes(self, limit):        
+    def get_news_viwes(self, params):        
         try:
             sample_model = SampleModel()
 
-            return sample_model.get_news_mostview(limit), None
+            return sample_model.get_news_mostview(int(params.limit)), None
         except Exception as er:
 			logger(str(er))
 			return None, str(er)
 
-    def get_news_most_comment(self, limit):        
+    def get_news_most_comment(self, params):        
         try:
             sample_model = SampleModel()
 
-            return sample_model.get_news_mostcomment(limit), None
+            return sample_model.get_news_mostcomment(int(params.limit)), None
         except Exception as er:
 			logger(str(er))
 			return None, str(er)
