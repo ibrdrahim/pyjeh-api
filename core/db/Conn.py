@@ -1,3 +1,6 @@
+__author__ = 'fuadsuyudi@gmal.com'
+__license__ = 'MIT'
+
 import MySQLdb
 from DBUtils.PersistentDB import PersistentDB
 from library.logging.Log import logger

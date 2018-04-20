@@ -1,3 +1,6 @@
+__author__ = 'fuadsuyudi@gmal.com'
+__license__ = 'MIT'
+
 import MySQLdb
 import math
 import re
