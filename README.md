@@ -1,4 +1,4 @@
-Bahasa | [English](/readme-en.md)
+Bahasa | [English](/README-en.md)
 
 # Pengantar
 
