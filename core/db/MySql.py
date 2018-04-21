@@ -25,9 +25,6 @@ class Select():
 			logger(str(er))
 
     def __del__(self):
-        Select.select = []
-        Select.query = []
-        Select.fetch = ''
         self.cursor.close()
         self.conn.close()
 
@@ -39,6 +36,10 @@ class Select():
 
     def get(self):
         build = Select.select + Select.query
+
+        Select.select = []
+        Select.query = []
+        Select.fetch = ''
         
         try:
             self.cursor.execute(' '.join(build))
@@ -202,14 +203,15 @@ class Update():
 			logger(str(er))
 
     def __del__(self):
-        Update.update = []
-        Update.change = []
-        Update.query = []
         self.cursor.close()
         self.conn.close()
 
     def get(self):
         build = Update.update + [','.join(Update.change)] + Update.query
+
+        Update.update = []
+        Update.change = []
+        Update.query = []
 
         try:
             self.cursor.execute(' '.join(build))
@@ -299,14 +301,15 @@ class Insert():
 			logger(str(er))
 
     def __del__(self):
-        Insert.insert = []
-        Insert.query = []
         self.cursor.close()
         self.conn.close()
 
     def get(self):
         build = Insert.insert + Insert.query
         
+        Insert.insert = []
+        Insert.query = []
+
         try:
             self.cursor.execute(' '.join(build))
         
@@ -360,14 +363,15 @@ class Delete():
 			logger(str(er))
 
     def __del__(self):
-        Delete.delete = []
-        Delete.query = []
         self.cursor.close()
         self.conn.close()
 
     def get(self):
         build = Delete.delete + Delete.query
 
+        Delete.delete = []
+        Delete.query = []
+        
         try:
             self.cursor.execute(' '.join(build))
         
