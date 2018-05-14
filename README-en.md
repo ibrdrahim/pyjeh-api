@@ -4,11 +4,10 @@
 PyJeh is BackEnd to build Service-Fire.
 
 ## Requirement
-
-    - Python 2.xx [here](https://docs.python.org/2/)
-    - Bottle [here](https://bottlepy.org/docs/dev/)
-    - MySQLdb [here](https://dev.mysql.com/doc/connector-python/en/)
-    - DBUtils for PersistentDB [here](https://github.com/Cito/DBUtils)
+- Python 2.xx [di sini](https://docs.python.org/2/)
+- Bottle [di sini](https://bottlepy.org/docs/dev/)
+- MySQLdb [di sini](https://dev.mysql.com/doc/connector-python/en/)
+- DBUtils untuk PersistentDB [di sini](https://github.com/Cito/DBUtils)
 
 ## Guide
 
