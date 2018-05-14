@@ -17,6 +17,12 @@ PyJeh adalah script Python yang menambahkan REST API untuk database MySQL ,Postg
 
 ## Panduan Singkat
 
+ ### MySQL 
+ 
+ ### PostgreSQL
+
+ ### mongoDB
+
 
 ## Referensi
 
